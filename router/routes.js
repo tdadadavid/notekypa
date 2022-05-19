@@ -1,6 +1,6 @@
 const UserController = require('../controllers/UserController');
 const NoteController = require('../controllers/NotesController');
-const { verifyUser } = require('../middlewares/middleware');
+const { verifyOwnership } = require('../middlewares/middleware');
 
 const express = require('express');
 const router = express.Router();
@@ -16,5 +16,6 @@ router.put('/api/users/:id', userController.updateUser);
 const notesController = NoteController
 router.post('/api/users/:id/notes', notesController.createNote);
 router.get('/api/users/:id/notes', notesController.getUserNotes);
+router.delete('/api/users/:user/notes/:note', verifyOwnership, notesController.deleteUserNote);
 
 module.exports = router;

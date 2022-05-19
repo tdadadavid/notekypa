@@ -40,31 +40,42 @@ const NoteController =  {
 
         try{
 
+            // check if this is a valid user
             const user = await Users.findByID(id);
 
             if (user){
 
                 const { title } = req.query;
 
+                // check if there was a query parameter given
                 if (title){
                     try{
+                        // find the user's note according to the query
                         const note = await Notes.findByTitle(title, id);
-                        if (note)
+                        if (note){
                             successResponse(res, 200, "Specified note found", note);
-                        else
+                            return;
+                        }else{
                             errorResponse(res, 404, `Note with title ${title} was not found.`, {});
+                        }
                     }catch(err){
                         errorResponse(res, 500, "Oops! an error occurred.");
+                        return;
                     }
                 }
 
                 try{
+                    // find the user's notes using the user's id
                     const notes = await Notes.findUsersNotes(id);
 
-                    if (notes)
+                    if (notes){
                         successResponse(res, 200, "All user's note", notes);
-                    else
+                        return;
+                    }else{
                         successResponse(res, 200, "User has no note", {});
+                        return;
+                    }
+
                 }catch (err){
                     console.log({ err });
                     errorResponse(res, 500, "Oops! an error occurred");
@@ -80,6 +91,21 @@ const NoteController =  {
         }
     },
 
+    deleteUserNote: async (req, res) => {
+        const {note, user} = req.params;
+
+        try {
+            const status = Notes.deleteNote(+note);
+            if (status){
+                successMessage(res, 200, "Note deleted successfully");
+            }else{
+
+            }
+        }catch (e) {
+
+        }
+
+    }
 
 
 }

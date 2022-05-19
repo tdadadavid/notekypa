@@ -24,6 +24,19 @@ class Notes{
         }
     }
 
+    static transform(array){
+        const note = array.map(result => {
+            const newNote = new Notes(result.title, result.note, result.user);
+            newNote.id = result.id;
+            newNote.created_at = result.created_at;
+            newNote.deleted_at = result.deleted_at;
+            newNote.updated_at = result.updated_at;
+            return newNote.toJson()
+        });
+
+        return note;
+    }
+
     static save(jottings){
 
         const statement = "INSERT INTO notes (title, note, user_id, created_at, updated_at, deleted_at) VALUES (?, ?, ?, ?, ?, ?)";
@@ -40,8 +53,38 @@ class Notes{
         });
     }
 
-    static findNoteByTitle(title, id){
-        const statement =
+    static findByTitle(title, id){
+        const statement = "SELECT * FROM notes WHERE user_id = ? AND title = ?";
+        const values = [id, title];
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, values, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else if (results.length === 0) {
+                    resolve(null);
+                } else {
+                    const note = this.transform(results);
+                    resolve(note);
+                }
+            });
+        });
+    }
+
+    static findByID(id){
+        const statement = "SELECT * FROM notes WHERE id = ?";
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, id, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else if (results.length === 0) {
+                    resolve(null);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
     }
 
     static findUsersNotes(userID){
@@ -54,20 +97,15 @@ class Notes{
                 } else if (results.length === 0) {
                     resolve(null);
                 } else {
-                    const userNotes = results.map(result => {
-                        const newNote = new Notes(result.title, result.note, result.user);
-                        newNote.id = result.id;
-                        newNote.created_at = result.created_at;
-                        newNote.deleted_at = result.deleted_at;
-                        newNote.updated_at = result.updated_at;
-                        return newNote.toJson()
-                    });
-
+                    const userNotes = this.transform(results);
                     resolve(userNotes);
                 }
             })
         });
     }
+
+    
+
 }
 
 
