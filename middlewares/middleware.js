@@ -1,6 +1,22 @@
 const Notes = require('../models/Notes');
-const User = require('../models/Users');
+const Users = require("../models/Users");
 const {successMessage, errorResponse} = require("../utils/ApiResponse");
+
+ensureUniqueEmail = async (req, res, next) => {
+    const { email } = req.body;
+    try{
+        const existingUser = await Users.findByEmail(email);
+
+        if (existingUser) {
+            errorResponse(res, 400, "Email already used.");
+            return;
+        }
+
+        next()
+    }catch (err){
+        errorResponse(res, 500, "Oops! an error occurred while registering user");
+    }
+}
 
 verifyOwnership = async (req, res, next) => {
     const { user, note } = req.params;
@@ -30,7 +46,7 @@ validateUser = async (req, res, next) => {
     const { id } = req.params;
 
     try{
-        const user = await User.findByID(+id);
+        const user = await Users.findByID(+id);
         if (user){
             next();
         } else {
@@ -43,8 +59,8 @@ validateUser = async (req, res, next) => {
 
 }
 
-
 module.exports = {
+    ensureUniqueEmail,
     verifyOwnership,
-    validateUser
+    validateUser,
 }

@@ -38,18 +38,6 @@ const UserController = {
     createUser: async (req, res) => {
         const { firstname, lastname, email, password } = req.body;
 
-        try{
-            const existingUser = await Users.findByEmail(email);
-
-            if (existingUser) {
-                errorResponse(res, 400, "Email already used.");
-                return;
-            }
-        }catch (err){
-            errorResponse(res, 500, "Oops! an error occurred while registering user");
-            return;
-        }
-
         let hashedPassword = await hashUserPassword(password);
         const user = {firstname, lastname, email, hashedPassword};
 

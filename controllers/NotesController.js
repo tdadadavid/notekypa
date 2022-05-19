@@ -9,19 +9,7 @@ const NoteController =  {
 
         const { id } = req.params;
         const { title, note } = req.body;
-        let user;
-
-        try {
-            user = await Users.findByID(id);
-            if (!user) {
-                errorResponse(res, 404, `No user found with this id ${id}`);
-                return;
-            }
-        }catch (err){
-            console.log({ err });
-            errorResponse(res,500, "Oops! an error occurred");
-        }
-
+        
         try{
 
             const newNote = new Notes(title, note, id);
