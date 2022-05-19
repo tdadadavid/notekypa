@@ -47,11 +47,12 @@ validateUser = async (req, res, next) => {
 
     try{
         const user = await Users.findByID(+id);
-        if (user){
-            next();
-        } else {
-            errorResponse(res, 404, `No user found with this id ${id}`);
+        if (!user){
+            errorResponse(res, 404, `User with id ${id} not found.`);
+            return;
         }
+
+        next();
     }catch (err){
         console.log({ err });
         errorResponse(res, 500, "Oops! an error occurred.");

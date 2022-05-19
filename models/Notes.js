@@ -72,11 +72,10 @@ class Notes{
     }
 
     static findByID(id){
-        const statement = "SELECT * FROM notes WHERE id = ? AND deleted_at = ?";
-        const values = [id, null]
+        const statement = "SELECT * FROM notes WHERE id = ? AND deleted_at is null";
 
         return new Promise((resolve, reject) => {
-            db.query(statement, values, (err, results) => {
+            db.query(statement, id, (err, results) => {
                 if (err) {
                     reject(err);
                 } else if (results.length === 0) {
@@ -124,7 +123,7 @@ class Notes{
         const statement = "SELECT * FROM notes WHERE user_id = ? AND deleted_at is not null";
 
         return new Promise((resolve, reject) => {
-            db.query(statement, userID, (err, res) => {
+            db.query(statement, +userID, (err, res) => {
                 if (err) {
                     reject(err);
                 } else if (res.length === 0) {

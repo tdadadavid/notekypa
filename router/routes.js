@@ -16,7 +16,7 @@ router.put('/api/users/:id', userController.updateUser);
 const notesController = NoteController
 router.post('/api/users/:id/notes',validateUser, notesController.createNote);
 router.get('/api/users/:id/notes', validateUser, notesController.getUserNotes);
-router.get('/api/users/:id/notes/deleted', notesController.getTrashedNotes);
+router.get('/api/users/:id/notes/deleted',validateUser, notesController.getTrashedNotes);
 router.delete('/api/users/:user/notes/:note', verifyOwnership, notesController.deleteUserNote);
 
 module.exports = router;
