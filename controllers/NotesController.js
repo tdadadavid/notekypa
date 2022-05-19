@@ -92,17 +92,18 @@ const NoteController =  {
     },
 
     deleteUserNote: async (req, res) => {
-        const {note, user} = req.params;
+        const {note} = req.params;
 
         try {
             const status = Notes.deleteNote(+note);
             if (status){
                 successMessage(res, 200, "Note deleted successfully");
             }else{
-
+                errorResponse(res, 500, "An error occurred while deleting note");
             }
-        }catch (e) {
-
+        }catch (err) {
+            console.log({ err });
+            errorResponse(res, 500, "Oops! an error occurred.");
         }
 
     }

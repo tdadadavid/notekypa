@@ -1,15 +1,11 @@
-const express = require('express');
 const Notes = require('../models/Notes');
-const {ignore} = require("nodemon/lib/rules");
 const {successMessage, errorResponse} = require("../utils/ApiResponse");
-const server = express();
 
-
-function verifyOwnership(req, res, next) {
+async function verifyOwnership(req, res, next) {
     const { user, note } = req.params;
 
     try{
-        const notes = Notes.findByID(+user);
+        const notes = await Notes.findByID(+note);
 
         if (notes === null){
             successMessage(res, 404, `Note with id ${note} not found.`);
@@ -24,6 +20,7 @@ function verifyOwnership(req, res, next) {
         }
 
     }catch (err){
+        console.log({ err });
         errorResponse(res, 500, "Oops! an error occurred.");
     }
 }

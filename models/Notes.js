@@ -104,7 +104,19 @@ class Notes{
         });
     }
 
-    
+    static deleteNote(id){
+        const statement = "DELETE FROM notes WHERE id = ?";
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, id, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            });
+        });
+    }
 
 }
 
