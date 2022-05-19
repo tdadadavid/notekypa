@@ -40,50 +40,40 @@ const NoteController =  {
 
         try{
 
-            // check if this is a valid user
-            const user = await Users.findByID(id);
-
-            if (user){
-
-                const { title } = req.query;
-
-                // check if there was a query parameter given
-                if (title){
-                    try{
-                        // find the user's note according to the query
-                        const note = await Notes.findByTitle(title, id);
-                        if (note){
-                            successResponse(res, 200, "Specified note found", note);
-                            return;
-                        }else{
-                            errorResponse(res, 404, `Note with title ${title} was not found.`, {});
-                        }
-                    }catch(err){
-                        errorResponse(res, 500, "Oops! an error occurred.");
-                        return;
-                    }
-                }
-
+            const { title } = req.query;
+            // check if there was a query parameter given
+            if (title){
                 try{
-                    // find the user's notes using the user's id
-                    const notes = await Notes.findUsersNotes(id);
-
-                    if (notes){
-                        successResponse(res, 200, "All user's note", notes);
+                    // find the user's note according to the query
+                    const note = await Notes.findByTitle(title, id);
+                    if (note){
+                        successResponse(res, 200, "Specified note found", note);
                         return;
                     }else{
-                        successResponse(res, 200, "User has no note", {});
-                        return;
+                        errorResponse(res, 404, `Note with title ${title} was not found.`, {});
+                        return
                     }
+                }catch(err){
+                    errorResponse(res, 500, "Oops! an error occurred.");
+                    return;
+                }
+            }
 
-                }catch (err){
-                    console.log({ err });
-                    errorResponse(res, 500, "Oops! an error occurred");
+            try{
+                // find the user's notes using the user's id
+                const notes = await Notes.findUsersNotes(+id);
+
+                if (notes){
+                    successResponse(res, 200, "All user's note", notes);
+                }else{
+                    successResponse(res, 200, "You have no note", {});
                 }
 
-            } else {
-                errorResponse(res, 404, `No user found with this id ${id}`);
+            }catch (err){
+                console.log({ err });
+                errorResponse(res, 500, "Oops! an error occurred");
             }
+
 
         }catch (err){
             console.log({ err });
@@ -124,7 +114,6 @@ const NoteController =  {
             errorResponse(res, 404, "Oops! an error occurred");
         }
     }
-
 
 }
 
