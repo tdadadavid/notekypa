@@ -54,8 +54,8 @@ class Notes{
     }
 
     static findByTitle(title, id){
-        const statement = "SELECT * FROM notes WHERE user_id = ? AND title = ?";
-        const values = [id, title];
+        const statement = "SELECT * FROM notes WHERE user_id = ? AND title = ? AND deleted_at = ?";
+        const values = [id, title, null];
 
         return new Promise((resolve, reject) => {
             db.query(statement, values, (err, results) => {
@@ -72,10 +72,11 @@ class Notes{
     }
 
     static findByID(id){
-        const statement = "SELECT * FROM notes WHERE id = ?";
+        const statement = "SELECT * FROM notes WHERE id = ? AND deleted_at = ?";
+        const values = [id, null]
 
         return new Promise((resolve, reject) => {
-            db.query(statement, id, (err, results) => {
+            db.query(statement, values, (err, results) => {
                 if (err) {
                     reject(err);
                 } else if (results.length === 0) {
@@ -88,10 +89,11 @@ class Notes{
     }
 
     static findUsersNotes(userID){
-        const statement = "SELECT * FROM notes WHERE user_id = ?";
+        const statement = "SELECT * FROM notes WHERE user_id = AND deleted_at = ?";
+        const values = [userID, null];
 
         return new Promise((resolve, reject) => {
-            db.query(statement, userID, (err, results) => {
+            db.query(statement, values, (err, results) => {
                 if (err) {
                     reject(err);
                 } else if (results.length === 0) {
@@ -105,14 +107,33 @@ class Notes{
     }
 
     static deleteNote(id){
-        const statement = "DELETE FROM notes WHERE id = ?";
+        const statement = "UPDATE notes SET deleted_at = ? WHERE id = ?";
+        const values = [new Date, id];
 
         return new Promise((resolve, reject) => {
-            db.query(statement, id, (err, res) => {
+            db.query(statement, values, (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
                     resolve(res);
+                }
+            });
+        });
+    }
+
+    static getDeleted(userID){
+        const statement = "SELECT * FROM notes WHERE user_id = ? AND deleted_at is not null";
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, userID, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else if (res.length === 0) {
+                    resolve(null);
+                } else {
+                    const notes = this.transform(res);
+                    console.log(notes);
+                    resolve(notes);
                 }
             });
         });

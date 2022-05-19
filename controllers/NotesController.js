@@ -106,6 +106,23 @@ const NoteController =  {
             errorResponse(res, 500, "Oops! an error occurred.");
         }
 
+    },
+
+    getTrashedNotes: async (req, res) => {
+        const { id } = req.params;
+
+        try{
+            const notes = await Notes.getDeleted(+id);
+
+            if (notes === null){
+                errorResponse(res, 404, "You have no deleted note");
+            }else{
+                successResponse(res, 200, "All deleted notes.", notes);
+            }
+        }catch (err) {
+            console.log({ err });
+            errorResponse(res, 404, "Oops! an error occurred");
+        }
     }
 
 
