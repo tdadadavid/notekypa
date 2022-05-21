@@ -1,5 +1,5 @@
 const {errorResponse, successMessage, successResponse} = require("../../../utils/ApiResponse");
-const Notes = require("../models/Notes");
+const Notes = require('../models/Notes');
 
 
 const NoteController =  {

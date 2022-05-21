@@ -2,22 +2,6 @@ const Notes = require('../components/Notes/models/Notes');
 const Users = require("../components/Users/models/Users");
 const {successMessage, errorResponse} = require("../utils/ApiResponse");
 
-ensureUniqueEmail = async (req, res, next) => {
-    const { email } = req.body;
-    try{
-        const existingUser = await Users.findByEmail(email);
-
-        if (existingUser) {
-            errorResponse(res, 400, "Email already used.");
-            return;
-        }
-
-        next()
-    }catch (err){
-        errorResponse(res, 500, "Oops! an error occurred while registering user");
-    }
-}
-
 verifyOwnership = async (req, res, next) => {
     const { user, note } = req.params;
 
@@ -42,26 +26,7 @@ verifyOwnership = async (req, res, next) => {
     }
 }
 
-validateUser = async (req, res, next) => {
-    const { id } = req.params;
-
-    try{
-        const user = await Users.findByID(+id);
-        if (!user){
-            errorResponse(res, 404, `User with id ${id} not found.`);
-            return;
-        }
-
-        next();
-    }catch (err){
-        console.log({ err });
-        errorResponse(res, 500, "Oops! an error occurred.");
-    }
-
-}
 
 module.exports = {
-    ensureUniqueEmail,
     verifyOwnership,
-    validateUser,
 }

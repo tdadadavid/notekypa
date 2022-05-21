@@ -101,7 +101,7 @@ class Users {
         const firstname = inputs.firstname || this.firstname;
         const lastname = inputs.lastname || this.lastname;
         const email = inputs.email || this.email;
-        const password = inputs.hashedPassword || this.password;
+        const password = inputs.password || this.password;
         const id = this.id;
 
         const values = [firstname, lastname, email, password, id];
