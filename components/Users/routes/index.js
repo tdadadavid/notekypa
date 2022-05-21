@@ -16,7 +16,7 @@ userRouter
 
 userRouter
     .route('/api/users/:id')
-    .get(validateUser, userController.getUser)
-    .put(updateUserValidator, validateUser, userController.updateUser);
+    .get(validateUser, userController.getUser);
+    // .put(updateUserValidator, validateUser, userController.updateUser);
 
 module.exports = userRouter;

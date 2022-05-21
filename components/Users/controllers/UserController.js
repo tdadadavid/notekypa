@@ -11,6 +11,7 @@ const UserController = {
            allUsers && successResponse(res, 200, "All users", allUsers);
 
         }catch (err){
+            console.log({ err });
             errorResponse(res, 500,"Oops! an error occurred");
         }
     },

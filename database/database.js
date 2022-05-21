@@ -9,16 +9,25 @@ const database = mysql.createConnection({
     password: config.database.password
 });
 
+const connectToDatabase = async () => {
+    try {
+        await database.connect((err) => {
+            if (err) {
+                console.log("An error occurred connecting to database");
+                console.log({ err });
+                return;
+            }
 
-database.connect((err) => {
-    if (err){
-        console.log({ DB_NAME: err });
-        console.log("Error connecting to database");
-    }else{
-        console.log("Successfully connected to database");
+            console.log("Successfully connected to database");
+        });
+    }catch (err){
+        console.log(err);
     }
-})
+}
 
 
-module.exports = database;
+module.exports = {
+    db: database,
+    connectToDatabase
+};
 

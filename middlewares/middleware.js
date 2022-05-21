@@ -26,7 +26,25 @@ verifyOwnership = async (req, res, next) => {
     }
 }
 
+validateUser = async (req, res, next) => {
+    const { id } = req.params;
+
+    try{
+        const user = await Users.findByID(+id);
+        if (!user){
+            errorResponse(res, 404, `User with id ${id} not found.`);
+            return;
+        }
+
+        next();
+    }catch (err){
+        console.log({ err });
+        errorResponse(res, 500, "Oops! an error occurred.");
+    }
+
+}
 
 module.exports = {
     verifyOwnership,
+    validateUser,
 }
