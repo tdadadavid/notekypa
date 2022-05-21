@@ -1,6 +1,5 @@
 const config = require('./config/config');
-const router = require('./router/routes');
-const { errorResponse } = require('./utils/ApiResponse');
+const router = require('./components/index');
 
 const express = require('express');
 const server = express();

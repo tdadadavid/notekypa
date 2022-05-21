@@ -1,7 +1,7 @@
 const Users = require('../models/Users');
-const Notes = require('../models/Notes');
-const { successResponse, successMessage, errorResponse } = require('../utils/ApiResponse');
-const { hashUserPassword } = require('../utils/helpers');
+const Notes = require('../../Notes/models/Notes');
+const { successResponse, successMessage, errorResponse } = require('../../../utils/ApiResponse');
+const { hashUserPassword } = require('../../../utils/helpers');
 
 const UserController = {
 

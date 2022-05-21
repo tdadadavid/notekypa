@@ -1,4 +1,4 @@
-const {errorResponse, successMessage, successResponse} = require("../utils/ApiResponse");
+const {errorResponse, successMessage, successResponse} = require("../../../utils/ApiResponse");
 const Notes = require("../models/Notes");
 
 

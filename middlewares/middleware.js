@@ -1,5 +1,5 @@
-const Notes = require('../models/Notes');
-const Users = require("../models/Users");
+const Notes = require('../components/Notes/models/Notes');
+const Users = require("../components/Users/models/Users");
 const {successMessage, errorResponse} = require("../utils/ApiResponse");
 
 ensureUniqueEmail = async (req, res, next) => {
