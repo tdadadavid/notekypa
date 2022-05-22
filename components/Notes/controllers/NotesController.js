@@ -1,7 +1,6 @@
 const {errorResponse, successMessage, successResponse} = require("../../../utils/ApiResponse");
 const Notes = require('../models/Notes');
 
-
 const NoteController =  {
 
     createNote: async (req, res) => {
@@ -70,7 +69,7 @@ const NoteController =  {
     },
 
     updateNote: async (req, res) => {
-
+        //TODO
     },
 
     deleteUserNote: async (req, res) => {
@@ -92,7 +91,7 @@ const NoteController =  {
     },
 
     restoreTrashedNotes: async (req, res) => {
-
+        //TODO
     },
 
     getTrashedNotes: async (req, res) => {

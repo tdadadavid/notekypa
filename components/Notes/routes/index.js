@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const NoteController = require('../controllers/NotesController')
-const { verifyOwnership, validateUser, validateNote } = require('../../../middlewares/middleware');
-const {newNoteValidator, updateNoteValidator} = require("../validators/newNote");
+const { verifyOwnership, validateUser, validateNote } = require('../../../middlewares');
+const newNoteValidator = require("../validators/newNote");
+const updateNoteValidator = require("../validators/updateNote");
 
 const notesRouter = Router();
-
 
 const notesController = NoteController
 

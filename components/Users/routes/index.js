@@ -1,4 +1,4 @@
-const { validateUser } = require('../../../middlewares/middleware');
+const { validateUser } = require('../../../middlewares');
 const signUpValidator = require('../validators/SignUp');
 const updateUserValidator = require('../validators/UpdateUser');
 
