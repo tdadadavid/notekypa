@@ -104,6 +104,7 @@ class Notes{
     }
 
     static deleteNote(id){
+        console.log({ id: id });
         const statement = "UPDATE notes SET deleted_at = ? WHERE id = ?";
         const values = [new Date, id];
 

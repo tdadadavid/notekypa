@@ -1,19 +1,27 @@
 const { Router } = require('express');
 const NoteController = require('../controllers/NotesController')
-const { verifyOwnership, validateUser } = require('../../../middlewares/middleware');
+const { verifyOwnership, validateUser, validateNote } = require('../../../middlewares/middleware');
+const {newNoteValidator, updateNoteValidator} = require("../validators/newNote");
 
 const notesRouter = Router();
 
 
 const notesController = NoteController
 
-notesRouter.get('/api/users/:id/notes/deleted',validateUser, notesController.getTrashedNotes);
-notesRouter.delete('/api/users/:user/notes/:note', verifyOwnership, notesController.deleteUserNote);
-
 notesRouter
     .route('/api/users/:id/notes')
-    .post(validateUser, notesController.createNote)
+    .post(validateUser, newNoteValidator, notesController.createNote)
     .get(validateUser, notesController.getUserNotes);
+
+
+notesRouter.get('/api/users/:id/notes/deleted-notes', validateUser, notesController.getTrashedNotes);
+
+notesRouter
+    .route('/api/users/:user/notes/:note')
+    .get(verifyOwnership, validateNote, notesController.getNoteByID)
+    .put(verifyOwnership, validateNote, updateNoteValidator, notesController.updateNote)
+    .put(verifyOwnership, validateNote, notesController.restoreTrashedNotes)
+    .delete(verifyOwnership, validateNote, notesController.deleteUserNote);
 
 
 

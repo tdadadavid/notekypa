@@ -14,11 +14,10 @@ const connectToDatabase = async () => {
         await database.connect((err) => {
             if (err) {
                 console.log("An error occurred connecting to database");
-                console.log({ err });
-                return;
+                console.log({err});
+            }else{
+                console.log("Successfully connected to database");
             }
-
-            console.log("Successfully connected to database");
         });
     }catch (err){
         console.log(err);

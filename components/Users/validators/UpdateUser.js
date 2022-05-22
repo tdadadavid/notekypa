@@ -22,6 +22,15 @@ updateUserValidator = async (req, res, next) => {
             return;
         }
 
+        if (email) {
+            const user = await Users.findByEmail(email);
+
+            if (user) {
+                errorResponse(res, 422, "Email already used.");
+                return;
+            }
+        }
+
         next();
 
     }catch (error){

@@ -1,5 +1,5 @@
 const Users = require('../models/Users');
-const { successResponse, errorResponse } = require('../../../utils/ApiResponse');
+const { successResponse, successMessage, errorResponse } = require('../../../utils/ApiResponse');
 const { hashUserPassword } = require('../../../utils/helpers');
 
 const UserController = {
@@ -49,29 +49,35 @@ const UserController = {
 
     },
 
+    updateUser: async (req, res) => {
 
-    // Test this route very well!!!!
-    // updateUser: async (req, res) => {
-    //
-    //     let { firstname, lastname, email, password } = req.body;
-    //
-    //     if(!password){
-    //         password = user[0].password;
-    //     }else {
-    //         password = await hashUserPassword(password);
-    //     }
-    //
-    //     try{
-    //         const status = await user[0].updateAndSave({firstname, lastname, email, password});
-    //         if (status)
-    //             successMessage(res, 200,"Successfully updated user's fields");
-    //
-    //     }catch (err){
-    //         console.log({ Error: err });
-    //         errorResponse(res, 500, "Oops! an error occurred");
-    //     }
-    //
-    // },
+        const user = req.user;
+
+        let { firstname, lastname, email, password } = req.body;
+
+
+        // if the user doesn't provide password
+        // use the previous password of the use
+        // else hash the new password.
+
+        if(!password){
+            password = user[0].password;
+        }else {
+            password = await hashUserPassword(password);
+        }
+
+        try{
+            const status = await user[0].updateAndSave({firstname, lastname, email, password});
+            if (status)
+                successMessage(res, 200,"Successfully updated user's fields");
+
+        }catch (err){
+            console.log({ Error: err });
+            errorResponse(res, 500, "Oops! an error occurred");
+        }
+
+    },
+
 }
 
 

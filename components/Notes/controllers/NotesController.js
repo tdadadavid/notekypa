@@ -63,20 +63,35 @@ const NoteController =  {
 
     },
 
+    getNoteByID: async (req, res) => {
+       const note = req.note;
+
+       successResponse(res, 200, "Note found.", note);
+    },
+
+    updateNote: async (req, res) => {
+
+    },
+
     deleteUserNote: async (req, res) => {
-        const {note} = req.params;
+        let note = req.note;
 
         try {
-            const status = Notes.deleteNote(+note);
-            if (status){
+            const successful = Notes.deleteNote(note[0].id);
+            if (successful) {
                 successMessage(res, 200, "Note deleted successfully");
-            }else{
-                errorResponse(res, 500, "An error occurred while deleting note");
+                return;
             }
+
+            errorResponse(res, 500, "An error occurred while deleting note");
         }catch (err) {
             console.log({ err });
             errorResponse(res, 500, "Oops! an error occurred.");
         }
+
+    },
+
+    restoreTrashedNotes: async (req, res) => {
 
     },
 

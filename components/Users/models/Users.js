@@ -116,11 +116,6 @@ class Users {
             });
         });
     }
-
-    saveNote(note){
-        const statement = "INSERT INTO users_notes (user_id, note_id) VALUES (?,?)";
-
-    }
 }
 
 module.exports = Users;

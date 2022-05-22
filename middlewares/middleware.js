@@ -35,7 +35,7 @@ validateUser = async (req, res, next) => {
             errorResponse(res, 404, `User with id ${id} not found.`);
             return;
         }
-
+        req.user = user;
         next();
     }catch (err){
         console.log({ err });
@@ -44,7 +44,25 @@ validateUser = async (req, res, next) => {
 
 }
 
+validateNote = async (req, res, next) => {
+    const noteID  = req.params.note;
+
+    try{
+        const note = await Notes.findByID(+noteID);
+        if (!note){
+            errorResponse(res, 404, `Note with id ${id} not found.`);
+            return;
+        }
+        req.note = note;
+        next();
+    }catch (err){
+        console.log({ err });
+        errorResponse(res, 500, "Oops! an error occurred.");
+    }
+}
+
 module.exports = {
     verifyOwnership,
     validateUser,
+    validateNote
 }
