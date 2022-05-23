@@ -68,9 +68,24 @@ const NoteController =  {
        successResponse(res, 200, "Note found.", note);
     },
 
-    updateNote: async (req, res) => {
-        //TODO
-    },
+    /*updateNote: async (req, res) => {
+        const userNote = req.note;
+
+        try {
+
+            const status = await userNote.editNote(req.editedPart);
+
+            if (status){
+                successMessage(res, 200, "Note updated successfully");
+            }else{
+                errorResponse(res, 400, "Unable to complete action");
+            }
+
+        }catch (err) {
+            console.log(err);
+            errorResponse(res, 500, "Oops! an error occurred.");
+        }
+    },*/
 
     deleteUserNote: async (req, res) => {
         let note = req.note;
@@ -91,7 +106,21 @@ const NoteController =  {
     },
 
     restoreTrashedNotes: async (req, res) => {
-        //TODO
+        let deletedNote = req.deletedNote;
+
+        try {
+
+            const status = await Notes.restoreNoteByID(deletedNote[0].id);
+            if (!status){
+                errorResponse(res, 400, "Unable to restore deleted note");
+                return;
+            }
+
+            successMessage(res, 200, "Note restored successfully");
+        }catch (e) {
+            console.log({ Error: e });
+            errorResponse(res, 500, "Oops! an error occurred.");
+        }
     },
 
     getTrashedNotes: async (req, res) => {

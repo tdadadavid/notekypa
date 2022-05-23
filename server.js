@@ -1,6 +1,6 @@
 const config = require('./config');
 const { connectToDatabase } = require('./database');
-const router = require('./components/index');
+const router = require('./components');
 
 const express = require('express');
 const server = express();

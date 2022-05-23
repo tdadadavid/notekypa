@@ -6,7 +6,7 @@ const updateNoteValidator = async (req, res, next) => {
     const { title, note} = req.body;
 
     try{
-        const { error } = updateNoteSchema.validate({
+        const { error, value } = updateNoteSchema.validate({
             title,
             note,
         });
@@ -15,6 +15,10 @@ const updateNoteValidator = async (req, res, next) => {
             errorResponse(res, 422, error.message);
             return;
         }
+
+        console.log(value);
+
+        req.editedPart = value;
 
         next();
     }catch (err){

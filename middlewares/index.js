@@ -50,7 +50,7 @@ validateNote = async (req, res, next) => {
     try{
         const note = await Notes.findByID(+noteID);
         if (!note){
-            errorResponse(res, 404, `Note with id ${id} not found.`);
+            errorResponse(res, 404, `Note with id ${noteID} not found.`);
             return;
         }
         req.note = note;
@@ -61,8 +61,27 @@ validateNote = async (req, res, next) => {
     }
 }
 
+validateDeletedNote = async (req, res, next) => {
+    const noteID  = req.params.deletedNoteID;
+
+    try{
+        const note = await Notes.findDeletedNoteByID(+noteID);
+        if (!note){
+            errorResponse(res, 404, `Note with id ${noteID} not found.`);
+            return;
+        }
+
+        req.deletedNote = note;
+        next();
+    }catch (err){
+        console.log({ err });
+        errorResponse(res, 500, "Oops! an error occurred.");
+    }
+}
+
 module.exports = {
     verifyOwnership,
     validateUser,
-    validateNote
+    validateNote,
+    validateDeletedNote,
 }

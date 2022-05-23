@@ -23,6 +23,21 @@ class Notes{
         }
     }
 
+    static restoreNoteByID = (id) => {
+        const statement = "UPDATE notes SET deleted_at = null WHERE id = ?";
+        const value = id;
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, value, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
     static transform(array){
         const note = array.map(result => {
             const newNote = new Notes(result.title, result.note, result.user);
@@ -72,6 +87,22 @@ class Notes{
 
     static findByID(id){
         const statement = "SELECT * FROM notes WHERE id = ? AND deleted_at is null";
+
+        return new Promise((resolve, reject) => {
+            db.query(statement, id, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else if (results.length === 0) {
+                    resolve(null);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static findDeletedNoteByID(id){
+        const statement = "SELECT * FROM notes WHERE id = ? AND deleted_at is not null";
 
         return new Promise((resolve, reject) => {
             db.query(statement, id, (err, results) => {
