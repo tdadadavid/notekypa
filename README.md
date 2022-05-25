@@ -24,7 +24,7 @@
     - last_update
 
 ## Routes
-* POST */users* - create a new user
+* POST */users* - create a new result
 **request body**
 ```json lines
 {
@@ -34,8 +34,8 @@
   password: string
 }
 ```
-* GET */users/:id* - Get a user
-* PUT */users/:id* - update user
+* GET */users/:id* - Get a result
+* PUT */users/:id* - update result
 
 **request body:**
 ```json lines
@@ -47,7 +47,7 @@
 ```
 
 
-* DELETE */users/:id -Delete user
+* DELETE */users/:id -Delete result
 
 
 

@@ -161,7 +161,6 @@ class Notes{
                     resolve(null);
                 } else {
                     const notes = this.transform(res);
-                    console.log(notes);
                     resolve(notes);
                 }
             });
